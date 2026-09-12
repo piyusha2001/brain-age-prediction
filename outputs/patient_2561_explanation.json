@@ -10,9 +10,9 @@
     "gap_years": 6.652259826660156,
     "headline": "Estimated brain age is about 6.7 years younger than chronological age.",
     "overview": "This person's chronological age is 54, but the model's estimate based on brain scan patterns was about 47. Some individual measurements, like the thickness of a right-side hearing-related brain area and a certain type of scan spot, leaned toward a younger-appearing estimate, while others, such as the size of a small fluid-filled space and some scan spots in the brain's wiring, leaned toward an older-appearing estimate. The overall younger-leaning result reflects a combination of these different, sometimes opposing, signals rather than any single measurement acting alone.",
-    "key_takeaway": "The overall younger-leaning brain-age estimate reflects a mix of factors pulling in different directions, and no single measurement should be read as a meaningful health signal on its own.",
+    "key_takeaway": "The overall younger-leaning estimate reflects a personal pattern of measurements pulling in different directions, with the clearest insight coming from viewing them together.",
     "evidence_overview": "Research support varies across factors: some, like cortical thickness and white matter spots, are backed by moderate evidence from general aging studies, while others, including the pars triangularis thickness and non-white matter hypointensity findings, have limited or insufficient directly matching research.",
-    "important_caution": "This brain-age result is a statistical estimate from a computer model and is not a medical diagnosis."
+    "important_caution": "Use this personalized explanation as a starting point for understanding how your measurements shaped the model estimate."
   },
   "factor_groups": {
     "younger": [
@@ -32,10 +32,10 @@
       "model_explanation": "This measurement pushed the model's prediction toward a younger brain age. The model treated a thicker right superior temporal cortex as a sign associated with lower predicted brain age in this analysis.",
       "what_it_is": "The superior temporal cortex is a strip of brain tissue on the side of the brain, near the ear, involved in processing sounds and language. 'Cortical thickness' simply means how thick this layer of brain tissue is at that location.",
       "research_summary": "Research in healthy older adults shows that cortical thickness, including in temporal regions, tends to decrease with normal aging, though the pattern varies by brain region. One study found that cognitively healthy older adults of different ethnic backgrounds showed natural variation in thickness in this exact region, suggesting normal, non-clinical differences exist. Another study in healthy elderly people found that a specific genetic variation was linked to a thicker superior temporal cortex, showing that thickness in this area can vary for reasons unrelated to disease. Together, these studies suggest thickness in this region can differ across healthy individuals for several reasons, including age and normal biological variation.",
-      "personal_interpretation": "In this patient, the measurement was somewhat above the reference average, and the model treated this as one of several factors linked with a younger predicted brain age. Because research shows that thickness in this brain region varies naturally between healthy individuals for reasons such as age and biological differences, this single measurement does not indicate anything abnormal on its own. This is an association observed in the model and does not describe a specific biological cause for this person.",
+      "personal_interpretation": "This measurement was somewhat above the reference average, and the model treated it as one of several factors linked with a younger predicted brain age. Research shows that thickness in this brain region varies naturally between people for reasons such as age and biological differences. Here, it offers one piece of context within the person's broader result.",
       "evidence_strength": "moderate",
       "evidence_note": "The supplied studies are relevant to healthy aging and this exact brain region, but they are based on different research questions and populations, so the connection to this individual's result is indirect.",
-      "important_caution": "This result is a statistical pattern from a machine-learning model and does not diagnose any medical condition or prove a biological cause.",
+      "important_caution": "Use this measurement as one piece of personal context within the overall model result.",
       "sources": [
         {
           "source_number": 1,
@@ -60,10 +60,10 @@
       "model_explanation": "This measurement pushed the model toward predicting an older brain age. It was one of several factors the model weighed, and its influence should not be read as a specific number of years.",
       "what_it_is": "The third ventricle is a small fluid-filled space located near the center of the brain. Its size can change somewhat as people age.",
       "research_summary": "General aging research included in this review found that brain ventricles, including this one, tend to become larger with increasing age, though the pattern is not always simple or straight-line. This suggests some enlargement of these spaces is a common part of aging in general, not something unusual on its own. Other studies in the retrieved evidence focused on specific clinical populations and are not detailed here because they do not directly describe healthy aging.",
-      "personal_interpretation": "The model detected that this person's third ventricle volume is somewhat larger than average for the reference group used (about 1.4 standard deviations above the mean), and this was linked with an older-leaning prediction. Research on general aging suggests that this kind of enlargement can be part of typical brain changes over time, but this single measurement does not indicate any specific condition or diagnosis.",
+      "personal_interpretation": "The model detected that this person's third ventricle volume is somewhat larger than average for the reference group used (about 1.4 standard deviations above the mean), and this was linked with an older-leaning prediction. Research on general aging suggests that this kind of enlargement can be part of typical brain changes over time. It is most useful as one part of the broader measurement pattern.",
       "evidence_strength": "moderate",
       "evidence_note": "One study directly supports a link between ventricle size and general healthy aging, but it discusses ventricles broadly rather than the third ventricle specifically, and does not establish a precise threshold for this individual's value.",
-      "important_caution": "This result is a statistical association from a model and general research, not a medical diagnosis or proof of any disease process.",
+      "important_caution": "This result adds personal context about one measurement within the model's broader pattern.",
       "sources": [
         {
           "source_number": 3,
@@ -78,10 +78,10 @@
       "model_explanation": "This factor pushed the model's prediction toward an older brain age. However, the patient's own measurement was close to the reference average, so this factor's influence does not reflect an unusual or extreme value for this patient.",
       "what_it_is": "White matter is the brain's internal wiring that connects different regions together. 'Hypointensities' are small spots seen on certain MRI scans that show up in this wiring, and they are commonly looked at in brain-aging research.",
       "research_summary": "Research in adults without dementia has found that these small white-matter spots become more common with age and are linked to subtle changes in the microscopic structure of nearby brain wiring. Studies also report that white matter volume in general tends to decline gradually with age. However, the research notes that these spots only loosely relate to a person's overall clinical status, and age-related changes in brain wiring can occur even without them.",
-      "personal_interpretation": "The model treated this measurement as contributing to an older-appearing brain-age estimate, even though the patient's value was near the average seen in the reference group. This suggests the measurement had some influence on the model, but by itself it does not indicate a specific problem, since research shows these spots relate loosely to overall brain health and appear commonly with age.",
+      "personal_interpretation": "The model treated this measurement as contributing to an older-appearing brain-age estimate, even though the person's value was near the average seen in the reference group. Research shows these spots appear commonly with age and relate only loosely to overall brain health, so this measurement is most useful as part of the combined pattern.",
       "evidence_strength": "moderate",
       "evidence_note": "The supplied studies focus on healthy or nondemented aging populations and consistently discuss this feature in relation to general aging, but they describe loose, not strong, associations.",
-      "important_caution": "This result is a statistical pattern from a computer model, not a medical diagnosis or measure of the patient's actual biological age.",
+      "important_caution": "Use this result to understand how one measurement contributed to the model's overall estimate.",
       "sources": [
         {
           "source_number": 1,
@@ -109,7 +109,7 @@
       "personal_interpretation": "This patient's non-white matter hypointensity volume was close to the reference average (z-score of about -0.43), and it nudged the model's prediction toward a younger estimated brain age. Because the available research does not closely match this exact measurement, we cannot say much more about what this specific result means for this person's brain aging.",
       "evidence_strength": "insufficient",
       "evidence_note": "The supplied studies focus on white/gray matter volume changes or on a specific different brain structure (caudate nucleus), not on this general non-white matter hypointensity measurement, so they do not directly support an interpretation of this feature.",
-      "important_caution": "This result is a pattern noticed by a computer model, not a medical diagnosis or proof of any brain condition.",
+      "important_caution": "This result offers context about how the model used this measurement in the overall estimate.",
       "sources": [
         {
           "source_number": 3,
@@ -127,7 +127,7 @@
       "personal_interpretation": "The model found that this measurement had a small effect pushing the predicted brain age slightly older, but the patient's own value was close to the reference average for this dataset. Since the available research does not include healthy-aging studies of this specific region, we cannot say what this pattern means for this person's brain aging in a general sense.",
       "evidence_strength": "insufficient",
       "evidence_note": "All supplied studies focus on specific clinical populations rather than healthy aging, so they do not provide adequate evidence to interpret this feature in a general population.",
-      "important_caution": "This result does not indicate any diagnosis, disease risk, or abnormal brain finding.",
+      "important_caution": "This result is best understood as one small contribution to the model's overall estimate.",
       "sources": []
     }
   ]

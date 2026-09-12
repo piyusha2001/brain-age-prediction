@@ -9,4 +9,6 @@ joblib
 requests
 python-dotenv
 anthropic
+elevenlabs>=2.68.0
 pypdf
+reportlab>=5.0.1
