@@ -1,8 +1,12 @@
+streamlit
 pandas
+openpyxl
 numpy
-requests
-python-dotenv
 xgboost
 scikit-learn
 shap
 joblib
+requests
+python-dotenv
+anthropic
+pypdf
