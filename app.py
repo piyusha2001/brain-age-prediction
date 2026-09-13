@@ -131,7 +131,7 @@ st.markdown(
     header[data-testid="stHeader"] { background:transparent; }
     #MainMenu, footer { visibility:hidden; }
     div[data-testid="stDialog"] { background:rgba(2,8,13,.72)!important; backdrop-filter:blur(10px); }
-    div[data-testid="stDialog"]>div,
+    div[data-testid="stDialog"]>div { display:flex!important; align-items:center!important; justify-content:center!important; width:100%!important; max-width:none!important; }
     div[data-testid="stDialog"] [role="dialog"] { width:min(780px,92vw)!important; max-width:780px!important; max-height:90vh!important; border:1px solid rgba(81,215,208,.2)!important; border-radius:24px!important; background:#0b151e!important; color:#e8f1f1!important; box-shadow:0 30px 90px rgba(0,0,0,.5)!important; }
     div[data-testid="stDialog"] [role="dialog"]>div { background:transparent!important; }
     div[data-testid="stDialog"] h2 { color:#eef7f6!important; font-size:1.45rem!important; letter-spacing:-.025em; }
@@ -203,11 +203,6 @@ st.markdown(
     .hero-button { display:inline-flex; align-items:center; justify-content:center; min-height:54px; padding:0 1.8rem; border-radius:999px; border:1px solid var(--line); color:var(--ink)!important; text-decoration:none!important; font-weight:600; }
     .hero-button.primary { color:#061316!important; background:var(--teal); border-color:var(--teal); box-shadow:0 12px 34px rgba(81,215,208,.16); }
     .hero-button:hover { border-color:rgba(81,215,208,.7); }
-    .capability-grid { display:grid; grid-template-columns:repeat(4,minmax(120px,1fr)); gap:.75rem; }
-    .capability { display:block; padding:1rem; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(17,29,39,.9),rgba(8,18,26,.78)); }
-    .capability-icon { color:var(--teal); font-size:1.2rem; margin-bottom:.75rem; }
-    .capability-label { color:var(--muted); font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; line-height:1.5; }
-    .capability-value { color:var(--ink); font-size:.92rem; line-height:1.55; font-weight:600; }
     .brain-visual { position:relative; width:min(100%,700px); justify-self:center; filter:drop-shadow(0 20px 60px rgba(24,106,117,.16)); }
     .brain-visual svg { width:100%; height:auto; overflow:visible; }
     .brain-outline { fill:url(#brainFill); stroke:#348a98; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; }
@@ -233,8 +228,8 @@ st.markdown(
     .intro h2 { font-size:2.35rem; margin-bottom:.8rem; }
     .intro p { line-height:1.75; }
     .feature-card { min-height:185px; padding:1.6rem; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,rgba(16,33,42,.86),rgba(8,19,27,.72)); }
-    .feature-card,.capability,[data-testid="stMetric"] { transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease; }
-    .feature-card:hover,.capability:hover,[data-testid="stMetric"]:hover { transform:translateY(-4px); border-color:rgba(81,215,208,.38); box-shadow:0 18px 42px rgba(0,0,0,.18); }
+    .feature-card,[data-testid="stMetric"] { transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease; }
+    .feature-card:hover,[data-testid="stMetric"]:hover { transform:translateY(-4px); border-color:rgba(81,215,208,.38); box-shadow:0 18px 42px rgba(0,0,0,.18); }
     .feature-number { color:var(--teal); font-size:.65rem; letter-spacing:.18em; }
     .feature-card h3 { font-size:1rem; margin:2rem 0 .7rem; }
     .feature-card p { font-size:.86rem; line-height:1.6; }
@@ -364,7 +359,7 @@ st.markdown(
     button[kind="primary"] p, button[kind="primary"] span { color:#061316!important; opacity:1!important; }
     button[kind="secondary"] { border-color:var(--line)!important; border-radius:999px!important; }
     hr { border-color:var(--line)!important; }
-    @media(max-width:1100px) { .hero{grid-template-columns:1fr}.brain-visual{max-width:620px;grid-row:1}.capability-grid{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:1100px) { .hero{grid-template-columns:1fr}.brain-visual{max-width:620px;grid-row:1} }
     @media(max-width:700px) { .block-container{padding-left:1rem;padding-right:1rem}.hero{min-height:auto;padding:3rem 0}.hero h1{font-size:2.8rem}.brain-visual{max-width:430px}.brain-tag{font-size:.54rem;padding:.65rem 1rem}.nav-note{display:none}.feature-card{min-height:auto;margin-bottom:.75rem}.biomarker-grid{grid-template-columns:1fr}.contribution-head{font-size:.78rem}.analysis-card{flex-basis:88vw}.mini-dashboard{grid-template-columns:112px 1fr}.z-gauge{width:108px;height:108px} }
     @media(prefers-reduced-motion:reduce) { .brain-node,.scan-ring,.target-ring,.hero h1,.microbar span,.carousel-hint span,.intro-transition,.intro-brand,.intro-brain,.intro-play .hero-copy,.intro-play .brain-visual{animation:none}.intro-transition{display:none} }
 
@@ -908,12 +903,6 @@ st.markdown(
         <div class="hero-actions">
             <a class="hero-button primary" href="#try-neurodecel">Start brain analysis</a>
             <a class="hero-button" href="#how-it-works">See what influenced the model</a>
-        </div>
-        <div class="capability-grid">
-            <div class="capability"><div class="capability-icon">⌁</div><div class="capability-label">MRI-derived measures</div><div class="capability-value">270 features</div></div>
-            <div class="capability"><div class="capability-icon">◉</div><div class="capability-label">Model</div><div class="capability-value">XGBoost estimate</div></div>
-            <div class="capability"><div class="capability-icon">⌕</div><div class="capability-label">Explainability</div><div class="capability-value">SHAP contributions</div></div>
-            <div class="capability"><div class="capability-icon">▤</div><div class="capability-label">Evidence</div><div class="capability-value">Published literature</div></div>
         </div>
     </div>
     <div class="brain-visual" aria-label="Animated MRI brain measurement illustration">

@@ -1,6 +1,6 @@
 import os
 import secrets
-
+import streamlit as st
 from dotenv import load_dotenv
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
@@ -9,7 +9,9 @@ from elevenlabs.client import ElevenLabs
 load_dotenv()
 
 ELEVENLABS_API_KEY = (
-    os.getenv("ELEVEN_LABS_API_KEY")
+    st.secrets.get("ELEVEN_LABS_API_KEY")
+    or st.secrets.get("ELEVENLABS_API_KEY")
+    or os.getenv("ELEVEN_LABS_API_KEY")
     or os.getenv("ELEVENLABS_API_KEY")
 )
 

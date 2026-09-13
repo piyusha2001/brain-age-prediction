@@ -3,6 +3,7 @@ import time
 import requests
 from dotenv import load_dotenv
 from feature_mapping import clean_feature_name
+import streamlit as st
 
 # --------------------------------------------------
 # 1. Load API key
@@ -10,7 +11,10 @@ from feature_mapping import clean_feature_name
 
 load_dotenv()
 
-AMASS_API_KEY = os.getenv("AMASS_API_KEY")
+AMASS_API_KEY = st.secrets.get(
+    "AMASS_API_KEY",
+    os.getenv("AMASS_API_KEY")
+)
 
 BASE_URL = "https://api.amass.tech/api/v1"
 

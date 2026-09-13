@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 import os
-
+import streamlit as st
 from anthropic import Anthropic
 from dotenv import load_dotenv
 
@@ -15,10 +15,17 @@ OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 load_dotenv(PROJECT_ROOT / ".env")
 
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-ANTHROPIC_MODEL = os.getenv(
+ANTHROPIC_API_KEY = st.secrets.get(
+    "ANTHROPIC_API_KEY",
+    os.getenv("ANTHROPIC_API_KEY")
+)
+
+if not ANTHROPIC_API_KEY:
+    raise ValueError("ANTHROPIC_API_KEY was not found")
+
+ANTHROPIC_MODEL = st.secrets.get(
     "ANTHROPIC_MODEL",
-    "claude-sonnet-5"
+    os.getenv("ANTHROPIC_MODEL")
 )
 
 
