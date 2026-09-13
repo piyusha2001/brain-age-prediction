@@ -160,7 +160,9 @@ https://synapse-ai-lab.streamlit.app/
 
 A recorded 2–3 minute website demo is also included with the submission.
 
-**Video link:** [ADD VIDEO LINK]
+**Video link:** 
+
+https://github.com/user-attachments/assets/e91acba4-f46d-4254-8967-fbaa09c142da
 
 The demo shows:
 
