@@ -1,647 +1,320 @@
-# 🧠 NeuroDecel
+# Synapse AI
 
-> **Your brain age is more than a number.**
+**Explainable brain-age estimation from MRI biomarkers**
 
-NeuroDecel is an explainable brain-age prediction system that estimates a person's brain age from MRI-derived structural measurements, identifies the brain regions that most influenced the prediction, retrieves relevant scientific evidence, and converts the result into a clear, evidence-grounded explanation.
+Synapse AI estimates a person's **brain age** from structural MRI biomarkers, compares it with their chronological age, and explains which brain features are contributing most to the prediction.
 
-Most brain-age models stop at:
-
-> "Your predicted brain age is 47."
-
-NeuroDecel goes further and asks:
-
-> **Why did the model make that prediction, and what does scientific research say about the contributing brain measurements?**
+The goal is not to diagnose disease. It is to turn a difficult-to-interpret result into something a person can understand and discuss with a clinician.
 
 ---
 
-## 🚀 What NeuroDecel Does
+## Problem and Intended User
 
-NeuroDecel combines machine learning, explainability, scientific literature retrieval, and LLM-based synthesis into one pipeline:
+Medical reports are often full of jargon that is hardest to parse at the exact moment it matters most. This anxiety around scans and results is sometimes described as **scanxiety**.
 
-```text
-MRI-derived brain measurements
-            ↓
-        XGBoost
-            ↓
-  Predicted brain age
-            ↓
-     Brain-age gap
-            ↓
-          SHAP
-            ↓
-Top patient-specific features
-            ↓
-       Feature mapping
-            ↓
-          Amass
-            ↓
-Scientific literature retrieval
-            ↓
-      Claude Sonnet
-            ↓
-Evidence-grounded explanation
-            ↓
-       Streamlit UI
-```
+Synapse AI is built for the gap between receiving a result and being able to discuss it with a clinician.
 
-The scientific papers are **not used to make the prediction**.
+Instead of producing another unexplained medical score, it focuses on helping users understand:
 
-The trained machine-learning model first predicts brain age. Scientific evidence is retrieved afterwards to explain and contextualize the model's most influential features.
+- their predicted brain age
+- their brain-age gap
+- which MRI biomarkers influenced the result
+- which features pushed the prediction older or younger
+- what the result may be worth discussing with a clinician
+
+The intended user is someone who has undergone structural brain imaging and wants a clearer explanation of their result.
+
+Synapse AI is an educational and decision-support prototype, not a diagnostic system.
 
 ---
 
-## ✨ Key Features
+## What We Built and Why
 
-### 🧠 Brain-Age Prediction
+Synapse AI takes structural MRI-derived biomarkers and predicts a person's **brain age** using **270 named structural MRI features**.
 
-A trained XGBoost regression model takes approximately **270 MRI-derived structural features** and predicts brain age.
+We calculate:
 
-The system then calculates:
-
-```text
-Brain-age gap = predicted brain age - chronological age
-```
+**Brain Age Gap = Predicted Brain Age - Chronological Age**
 
 For example:
 
-```text
-Chronological age: 54
-Predicted brain age: 47.7
-Brain-age gap: -6.3 years
-```
+- Chronological age: 42
+- Predicted brain age: 49
+- Brain age gap: +7 years
 
-A negative gap means the model estimated a younger brain age, while a positive gap means the model estimated an older brain age.
+Rather than stopping at the number, Synapse AI uses model explainability to identify which biomarkers contributed most strongly to the prediction.
 
----
-
-### 🔎 Patient-Specific Explainability
-
-NeuroDecel uses **SHAP** to explain each individual prediction.
-
-Instead of only showing global feature importance, the system identifies which measurements had the strongest influence on that specific person's prediction and whether they pushed the model toward:
-
-- an **older predicted brain age**
-- a **younger predicted brain age**
-
-The strongest searchable features are then passed to the scientific evidence retrieval stage.
+Those contributions are then translated into plain-language explanations so the result is understandable rather than a black box.
 
 ---
 
-### 📚 Scientific Evidence with Amass
+## Technical Architecture and Tools Used
 
-For the most influential MRI-derived features, NeuroDecel queries **Amass BiomedCore** for relevant biomedical literature.
+### Modeling
 
-Retrieved studies are filtered and ranked using factors such as:
+- **XGBoost** for brain-age regression
+- **270 structural MRI biomarkers** as input features
+- **pandas** for data handling
+- **scikit-learn** for preprocessing and evaluation
+- **joblib** for model persistence
 
-- relevance to the brain measurement
-- relevance to aging
-- journal quality
-- citation count
-- retraction status
+### Calibration
 
-Healthy and normal-aging evidence is prioritized whenever possible.
+Brain-age models can show age-related prediction bias, where younger participants are predicted older and older participants are predicted younger.
 
----
+We fit a **bias correction on a held-out calibration set** and apply it to a **separate untouched test set**.
 
-### 🤖 Evidence-Grounded Explanations with Claude
+This reduces prediction bias while avoiding information leakage from the test data.
 
-Claude receives:
+### Explainability
 
-- the patient's model result
-- SHAP direction
-- reference-distribution information
-- scientific evidence retrieved through Amass
+We use **SHAP** for per-prediction attribution.
 
-It then generates a medically cautious, plain-language explanation containing:
+For each prediction, SHAP identifies:
 
-- how the feature affected the model
-- what the brain measurement represents
-- what scientific research says about the feature and aging
-- how strong the evidence is
-- important limitations
-- supporting scientific sources
+- which MRI biomarkers influenced the prediction most
+- whether each biomarker pushed the predicted age higher or lower
+- the relative contribution of each feature
 
-The system explicitly separates:
+### AI and Product Layer
+
+- **Streamlit** — interactive web application
+- **Amass** — evidence-based reasoning
+- **Anthropic Claude** — plain-language explanation generation
+- **ElevenLabs** — optional voice read-out
+
+The LLM does not generate the brain-age prediction itself. It explains the output of the trained ML model and its SHAP attributions.
+
+### Architecture
+
+### Architecture
 
 ```text
-What the MODEL tells us
-            +
-What the RESEARCH tells us
-```
-
-SHAP values are treated as model influences, not biological causes.
-
----
-
-## 📄 MRI Report Upload
-
-The Streamlit interface supports structured PDF reports containing:
-
-```text
-Patient ID: MRI-DEMO-001
-Patient Age: 54
-
-RhSuperiortemporalThick: 2.7615
-ThirdVentVol: 1084.32
-WMHypointensitiesVol: 742.11
-...
-```
-
-The uploaded report contains MRI-derived structural measurements expected by the trained model.
-
-The full pipeline is then executed:
-
-```text
-PDF
- ↓
-Feature extraction
- ↓
-XGBoost
- ↓
-Brain-age prediction
- ↓
-SHAP
- ↓
-Top contributing features
- ↓
-Amass
- ↓
-Scientific evidence
- ↓
-Claude
- ↓
-Plain-language report
-```
-
-The current prototype works with measurements that have already been extracted from MRI scans.
-
-A future version could integrate directly with MRI-processing pipelines so that users can upload the scan itself.
-
----
-
-## ⚡ Demo Mode
-
-NeuroDecel also includes an instant demo using a precomputed anonymized patient example.
-
-This allows users to explore the complete interface without waiting for:
-
-- model execution
-- Amass retrieval
-- Claude generation
-
-This is especially useful during live presentations where many users may open the application simultaneously.
-
----
-
-## 🏗️ Project Structure
-
-```text
-brain-age-prediction/
-│
-├── app.py
-├── README.md
-├── requirements.txt
-├── .env
-├── .gitignore
-│
-├── dataset/
-│   └── BIOMARKERDATA.xlsx
-│
-├── models/
-│   ├── brainage_xgb_model.json
-│   ├── bias_correction_model.pkl
-│   ├── feature_cols.pkl
-│   └── training_reference_stats.pkl
-│
-├── notebooks/
-│   └── Braincodetest.ipynb
-│
-├── outputs/
-│   ├── all_test_patients_explained.csv
-│   ├── test_set_brain_age_gap.csv
-│   ├── predicted_vs_actual_test.png
-│   ├── patient_2561_amass_evidence.json
-│   └── patient_2561_explanation.json
-│
-└── src/
-    ├── __init__.py
-    ├── model_service.py
-    ├── pdf_parser.py
-    ├── feature_mapping.py
-    ├── amass_client.py
-    ├── evidence_pipeline.py
-    └── claude_client.py
-```
-
----
-
-## ⚙️ System Components
-
-### `model_service.py`
-
-Handles inference for new patients.
-
-Responsibilities include:
-
-- loading the saved XGBoost model
-- validating the required MRI features
-- generating the raw brain-age prediction
-- applying bias correction
-- calculating brain-age gap
-- computing SHAP values
-- ranking patient-specific contributors
-- calculating reference-distribution z-scores
-
----
-
-### `feature_mapping.py`
-
-Converts internal MRI feature names into medically understandable search terms.
-
-For example:
-
-```text
-RhSuperiortemporalThick
-```
-
-becomes:
-
-```text
-right superior temporal cortex cortical thickness
-```
-
-This allows literature retrieval to use meaningful biomedical terminology.
-
----
-
-### `amass_client.py`
-
-Handles communication with the Amass API.
-
-Current functionality includes:
-
-- authentication
-- biomedical literature search
-- retries
-- rate-limit handling
-- evidence filtering
-- relevance scoring
-
-The current pipeline primarily uses:
-
-```text
-Amass BiomedCore
-```
-
----
-
-### `evidence_pipeline.py`
-
-Takes the top patient-specific SHAP factors and retrieves relevant scientific evidence.
-
-Example structure:
-
-```json
-{
-  "raw_feature": "ThirdVentVol",
-  "medical_name": "cerebral third ventricle volume",
-  "direction": "older",
-  "z_score": 1.42,
-  "amass": {
-    "papers": []
-  }
-}
-```
-
----
-
-### `claude_client.py`
-
-Uses Claude to convert model output and scientific evidence into understandable explanations.
-
-Claude is instructed to:
-
-- separate model findings from scientific evidence
-- prioritize healthy-aging research
-- avoid diagnosis
-- avoid causal claims
-- avoid interpreting z-scores as clinical abnormalities
-- acknowledge weak or indirect evidence
-- distinguish statistical associations from biological conclusions
-
----
-
-### `pdf_parser.py`
-
-Extracts patient information and MRI-derived measurements from structured PDFs.
-
-The parser currently expects feature names matching those used by the trained model.
-
-Example:
-
-```text
-Patient ID: MRI-DEMO-001
-Patient Age: 54
-
-ThirdVentVol: 1084.32
-RhSuperiortemporalThick: 2.7615
-WMHypointensitiesVol: 742.11
-...
-```
-
----
-
-## 🧠 Model Artifacts
-
-The trained model is saved so the Streamlit app does not need to retrain it.
-
-```python
-model.save_model(
-    MODELS_DIR / "brainage_xgb_model.json"
-)
-
-joblib.dump(
-    feature_cols,
-    MODELS_DIR / "feature_cols.pkl"
-)
-
-joblib.dump(
-    bias_model,
-    MODELS_DIR / "bias_correction_model.pkl"
-)
-```
-
-Training-distribution statistics are also saved:
-
-```python
-training_reference = {
-    "mean": X_train.mean(axis=0),
-    "std": X_train.std(axis=0),
-}
-
-joblib.dump(
-    training_reference,
-    MODELS_DIR / "training_reference_stats.pkl"
-)
-```
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-AMASS_API_KEY=your_amass_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
-ANTHROPIC_MODEL=claude-sonnet-5
-```
-
-Do not commit `.env`.
-
-Add it to `.gitignore`:
-
-```text
-.env
-__pycache__/
-.DS_Store
-```
-
----
-
-## 📦 Installation
-
-Clone the repository:
-
-```bash
-git clone <your-repository-url>
-cd brain-age-prediction
-```
-
-Install dependencies:
-
-```bash
-python3 -m pip install -r requirements.txt
-```
-
-Example dependencies:
-
-```text
-streamlit
-pandas
-numpy
-openpyxl
-xgboost
-scikit-learn
-shap
-joblib
-requests
-python-dotenv
-anthropic
-pypdf
-```
-
----
-
-## ▶️ Run the Application
-
-Start Streamlit:
-
-```bash
-python3 -m streamlit run app.py
-```
-
-Then open:
-
-```text
-http://localhost:8501
-```
-
----
-
-## 📄 MRI Report Format
-
-The prototype expects a text-based PDF containing:
-
-1. patient age
-2. optional patient ID
-3. all required MRI-derived measurements
-
-Example:
-
-```text
-NEUROIMAGING BIOMARKER REPORT
-
-Patient ID: MRI-DEMO-001
-Patient Age: 54
-
-MRI STRUCTURAL MEASUREMENTS
-
-LhBanksstsThick: 2.4123
-LhCaudalanteriorcingulateThick: 2.6741
-RhSuperiortemporalThick: 2.7615
-ThirdVentVol: 1084.32
-WMHypointensitiesVol: 742.11
-...
-```
-
-All feature names must currently match the feature names stored in:
-
-```text
-models/feature_cols.pkl
-```
-
----
-
-## 🔬 Example Output
-
-A NeuroDecel result may look like:
-
-```text
-Chronological age
-54
-
-Estimated brain age
-47.7
-
-Brain-age gap
-6.3 years younger
-```
-
-The system then identifies features that pushed the prediction in different directions.
-
-Example:
-
-```text
-Younger-associated
-
-- Right superior temporal cortex thickness
-- Non-white matter hypointensity volume
-
-Older-associated
-
-- Third ventricle volume
-- White matter hypointensity volume
-```
-
-Each feature can include:
-
-- model explanation
-- anatomical explanation
-- research summary
-- patient-specific interpretation
-- evidence strength
-- supporting scientific sources
-- important caution
-
----
-
-## 💡 Why NeuroDecel?
-
-Brain-age prediction has growing applications in neuroscience research, but a single predicted age is difficult to interpret.
-
-A result such as:
-
-> "Your predicted brain age is 7 years older than your chronological age."
-
-does not explain:
-
-- which measurements influenced the prediction
-- whether one or many brain regions drove the result
-- whether scientific research supports those relationships
-- how strong the evidence is
-- what limitations exist
-
-NeuroDecel bridges that gap by combining:
-
-```text
-Prediction
-+
-Explainability
-+
+Structural MRI biomarkers
+          ↓
+      XGBoost
+          ↓
+ Predicted brain age
+          ↓
+   Bias correction
+          ↓
+   Brain age gap
+          ↓
+        SHAP
+          ↓
+Top contributing biomarkers
+          ↓
+        Amass
 Scientific evidence retrieval
-+
-Grounded explanation
+          ↓
+       Claude
+Plain-language explanation
+          ↓
+     Streamlit
+          ↓
+   ElevenLabs
+Optional voice output
 ```
 
-The goal is not just to produce another brain-age number.
-
-The goal is to make brain-age prediction **more transparent, evidence-aware, and understandable**.
+**Flow:** XGBoost predicts → SHAP explains the prediction → Amass retrieves relevant scientific evidence → Claude turns the model output and evidence into a plain-language explanation → Streamlit presents the result → ElevenLabs optionally reads it aloud.
 
 ---
 
-## 🌍 Future Work
+## Data Sources, Licences and Evidence
 
-Future extensions include:
+### Data Source
 
-- direct MRI or DICOM upload
-- automated brain segmentation
-- automatic MRI feature extraction
-- FreeSurfer integration
-- longitudinal brain-age tracking
-- prediction uncertainty estimates
-- broader biomedical evidence retrieval
-- demographic fairness analysis
-- improved evidence-ranking models
-- secure clinical/research deployment
-- automated downloadable reports
+**OpenNeuro ds004856**
 
-The future pipeline could become:
+The dataset contains structural MRI and cognitive assessment data used for the brain-age modeling pipeline.
+
+OpenNeuro datasets are distributed under the **CC0 public-domain dedication**.
+
+### Evidence Layer
+
+The explanation pipeline is designed to keep prediction and language generation separate:
+
+```text
+Model prediction
+      ↓
+SHAP attribution
+      ↓
+Relevant evidence
+      ↓
+Plain-language explanation
+```
+
+This reduces the risk of the language model inventing reasons that are unrelated to the underlying prediction.
+
+---
+
+## Working Demo
+
+### Live Website
+
+https://synapse-ai-lab.streamlit.app/
+
+### Recorded Demo
+
+A recorded 2–3 minute website demo is also included with the submission.
+
+**Video link:** [ADD VIDEO LINK]
+
+The demo shows:
+
+1. entering or loading participant biomarker data
+2. generating a brain-age prediction
+3. calculating the brain-age gap
+4. displaying the strongest SHAP contributors
+5. generating a plain-language explanation
+6. optional voice read-out
+
+---
+
+## Results and Success Metrics
+
+Current test-set performance:
+
+| Metric | Result |
+|---|---:|
+| Mean Absolute Error (MAE) | **7.11 years** |
+| Pearson correlation (r) | **0.875** |
+| Held-out test set | **n = 93** |
+| Validation | **5-fold cross-validation** |
+
+The model's performance was also consistent under **5-fold cross-validation**.
+
+### Why These Metrics?
+
+**Mean Absolute Error (MAE)** measures the average difference between predicted brain age and chronological age.
+
+An MAE of **7.11 years** means the model differs from chronological age by about seven years on average.
+
+**Pearson correlation (r)** measures how strongly predicted brain age tracks chronological age across participants.
+
+Our result of **r = 0.875** indicates a strong relationship between predicted and chronological age.
+
+---
+
+## Limitations, Risks and Safety Considerations
+
+### Not Diagnostic
+
+Synapse AI is not a diagnostic system.
+
+It does not currently produce:
+
+- disease risk scores
+- neurological diagnoses
+- treatment recommendations
+- medication recommendations
+
+Brain age should not be interpreted as a diagnosis.
+
+### Small Held-Out Test Set
+
+The untouched test set contains **93 participants**, which is relatively small for a medical machine-learning system.
+
+Larger external datasets would be needed before making claims about real-world generalization.
+
+### No Demographic Fairness Check Yet
+
+The current dataset does not provide enough demographic information to support a robust fairness analysis.
+
+A production system would need evaluation across factors such as:
+
+- age groups
+- sex
+- ethnicity
+- scanner manufacturers
+- imaging sites
+- geographic populations
+
+### No Raw MRI Processing Yet
+
+The current system works with **pre-extracted structural MRI biomarkers**.
+
+It does not yet take raw MRI scans and automatically perform segmentation and biomarker extraction.
+
+### Language Model Risk
+
+Claude is used only to explain structured outputs from the brain-age model, SHAP analysis, and evidence layer.
+
+The system follows a simple principle:
+
+> **The ML model makes the prediction. The LLM explains the prediction.**
+
+AI-generated explanations can still contain inaccuracies and should not replace consultation with a healthcare professional.
+
+---
+
+## Team Members
+
+- **Piyusha Patil** — Machine Learning, AI integration, product development
+- **Shakeel J** — Medical Engineer
+- **Haripriya Sampath** — Medical Engineer
+- **Soundharya Y** — Medical Engineer
+
+---
+
+## Next Steps
+
+### 1. Longitudinal Brain-Age Trajectories
+
+Add support for repeated scans over time so users can track brain-age changes rather than relying on a single prediction.
+
+```text
+MRI at T1 → Brain age
+MRI at T2 → Brain age
+MRI at T3 → Brain age
+       ↓
+Brain-age trajectory
+```
+
+### 2. Next-Step Guidance Layer
+
+Build an evidence-grounded guidance layer that helps users understand which questions or follow-up topics may be worth discussing with a clinician.
+
+This would remain educational rather than diagnostic.
+
+### 3. Direct MRI Ingestion
+
+Extend the pipeline from:
+
+```text
+Extracted biomarkers → Brain age
+```
+
+to:
 
 ```text
 Raw MRI
    ↓
-Automatic segmentation
+Segmentation
    ↓
-Structural feature extraction
+Biomarker extraction
    ↓
-Brain-age prediction
+Brain-age model
    ↓
-SHAP
+SHAP explanation
    ↓
-Scientific evidence retrieval
-   ↓
-Grounded explanation
-   ↓
-Interactive report
+Evidence-grounded explanation
 ```
 
----
+### 4. External Validation
 
-## ⚠️ Disclaimer
+Evaluate Synapse AI on independent neuroimaging datasets collected at different institutions and using different MRI scanners.
 
-NeuroDecel is a **research prototype**.
+### 5. Fairness Evaluation
 
-Brain age is a statistical estimate produced by a machine-learning model. It is not a direct measurement of biological brain age and should not be interpreted as a medical diagnosis.
-
-SHAP values describe how features influenced the machine-learning model's prediction. They do not establish biological causation, disease, disease risk, or clinical abnormality.
-
-Scientific literature retrieved by the system provides external context and is not used to generate the original brain-age prediction.
-
-NeuroDecel is not intended for clinical diagnosis or medical decision-making.
+Once sufficiently diverse datasets are available, evaluate model performance across demographic and clinical subgroups.
 
 ---
 
-## 🛠️ Built With
+## Disclaimer
 
-- Python
-- XGBoost
-- SHAP
-- Pandas
-- scikit-learn
-- Amass
-- Anthropic Claude
-- Streamlit
-- PyPDF
+Synapse AI is a research and educational prototype.
 
----
+It is **not a medical device and does not provide medical diagnosis or treatment recommendations**.
 
-## 👩‍💻 Team
-
-Built as a hackathon prototype exploring explainable and evidence-grounded AI for brain aging.
-
----
-
-## One-line Summary
-
-**NeuroDecel turns brain-age prediction from a single number into an interpretable, evidence-grounded explanation.**
+Predictions and explanations should not be used as a substitute for professional medical advice.
