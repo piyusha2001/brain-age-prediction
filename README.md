@@ -22,9 +22,11 @@ Instead of producing another unexplained medical score, it focuses on helping us
 - which features pushed the prediction older or younger
 - what the result may be worth discussing with a clinician
 
+Another key goal is **supporting earlier awareness of brain health**. Synapse AI can help people understand potential signs of accelerated brain aging earlier, giving them useful context about their brain health before meeting with a doctor. This can help users arrive at their appointment better informed and more prepared to discuss their results.
+
 The intended user is someone who has undergone structural brain imaging and wants a clearer explanation of their result.
 
-Synapse AI is an educational and decision-support prototype, not a diagnostic system.
+Synapse AI is an educational and decision-support prototype, not a diagnostic system. It is not intended to diagnose disease or replace clinical advice.
 
 ---
 
