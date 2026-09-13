@@ -4,6 +4,8 @@ import requests
 from dotenv import load_dotenv
 from feature_mapping import clean_feature_name
 import streamlit as st
+from config import require_config
+
 
 # --------------------------------------------------
 # 1. Load API key
@@ -11,11 +13,7 @@ import streamlit as st
 
 load_dotenv()
 
-AMASS_API_KEY = st.secrets.get(
-    "AMASS_API_KEY",
-    os.getenv("AMASS_API_KEY")
-)
-
+AMASS_API_KEY = require_config("AMASS_API_KEY")
 BASE_URL = "https://api.amass.tech/api/v1"
 
 HEADERS = {

@@ -5,15 +5,12 @@ from dotenv import load_dotenv
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
 
+from config import require_config
+
 
 load_dotenv()
 
-ELEVENLABS_API_KEY = (
-    st.secrets.get("ELEVEN_LABS_API_KEY")
-    or st.secrets.get("ELEVENLABS_API_KEY")
-    or os.getenv("ELEVEN_LABS_API_KEY")
-    or os.getenv("ELEVENLABS_API_KEY")
-)
+ELEVENLABS_API_KEY = require_config("ELEVEN_LABS_API_KEY")
 
 # Bella is a warm, bright, professional female voice available through
 # ElevenLabs. Set ELEVENLABS_VOICE_ID to use a different account voice.
