@@ -254,7 +254,7 @@ AI-generated explanations can still contain inaccuracies and should not replace 
 
 ## Team Members
 
-- **Piyusha Patil** — Machine Learning, AI integration, product development
+- **Piyusha Patil** — Computer Science Engineer
 - **Shakeel J** — Medical Engineer
 - **Haripriya Sampath** — Medical Engineer
 - **Soundharya Y** — Medical Engineer
