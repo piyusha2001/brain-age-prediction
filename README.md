@@ -209,6 +209,7 @@ Synapse AI is not a diagnostic system.
 It does not currently produce:
 
 - disease risk scores
+- trajectory analysis
 - neurological diagnoses
 - treatment recommendations
 - medication recommendations
