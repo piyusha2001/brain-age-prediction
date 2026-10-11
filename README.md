@@ -41,8 +41,8 @@ We calculate:
 For example:
 
 - Chronological age: 42
-- Predicted brain age: 49
-- Brain age gap: +7 years
+- Predicted brain age: 55
+- Brain age gap: +13 years
 
 Rather than stopping at the number, Synapse AI uses model explainability to identify which biomarkers contributed most strongly to the prediction.
 
@@ -86,8 +86,6 @@ For each prediction, SHAP identifies:
 - **ElevenLabs** — optional voice read-out
 
 The LLM does not generate the brain-age prediction itself. It explains the output of the trained ML model and its SHAP attributions.
-
-### Architecture
 
 ### Architecture
 
